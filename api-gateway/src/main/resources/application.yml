@@ -1,0 +1,43 @@
+server:
+  port: 8083
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: INFO
+spring:
+  application:
+    name: API_GATEWAY
+
+  cloud:
+    gateway:
+      routes:
+      - id: PRODUCT_SERVICE #Product Service Routes
+        uri: http://localhost:8080
+        predicates:
+        - Path=/api/product/**
+
+      - id: ORDER_SERVICE #Order Service Routes
+        uri: http://localhost:8081
+        predicates:
+        - Path=/api/order/**
+
+      - id: INVENTORY_SERVICE #Inventory Service Routes
+        uri: http://localhost:8082
+        predicates:
+        - Path=/api/inventory**
+
+      - id: discovery-server #Inventory Service Routes
+        uri: http://localhost:8761
+        predicates:
+        - Path=/eureka/web**
+        filters:
+        - SetPath=/
+
+      - id: discovery-server-static #Inventory Service Routes
+        uri: http://localhost:8761
+        predicates:
+          - Path=/eureka/**
