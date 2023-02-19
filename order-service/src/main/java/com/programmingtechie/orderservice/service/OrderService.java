@@ -7,6 +7,7 @@ import com.programmingtechie.orderservice.model.Order;
 import com.programmingtechie.orderservice.model.OrderLineItems;
 import com.programmingtechie.orderservice.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -25,6 +26,7 @@ public class OrderService {
 
     @Autowired
     private WebClient.Builder webClient;
+
     public String placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
@@ -39,7 +41,7 @@ public class OrderService {
                 .map(OrderLineItems::getSkuCode)
                 .collect(Collectors.toList());
         InventoryResponse[] inventoryResponsesArray = webClient.build().get()
-                .uri("http://localhost:8082/api/inventory",
+                .uri("http://INVENTORY_SERVICE//api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)

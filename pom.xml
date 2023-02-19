@@ -19,6 +19,7 @@
         <module>product-service</module>
         <module>order-service</module>
         <module>inventory-service</module>
+        <module>discovery-server</module>
     </modules>
 
     <properties>
@@ -60,6 +61,10 @@
                     </excludes>
                 </configuration>
             </plugin>
-        </plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+            </plugins>
     </build>
 </project>
