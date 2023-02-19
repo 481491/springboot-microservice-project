@@ -1,5 +1,6 @@
 package com.programmingtechie.inventoryservice.controller;
 
+import com.programmingtechie.inventoryservice.dto.InventoryResponse;
 import com.programmingtechie.inventoryservice.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,12 @@ public class InventoryController {
     @Autowired
     private InventoryService inventoryService;
 
-    @GetMapping("/{sku-code}")
+    // http://localhost:8082/api/inventory/iphone-13,iphone13-red
+
+    // http://localhost:8082/api/inventory?skuCode=iphone-13&skuCode=iphone13-red
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public boolean isInStock(@RequestParam String skuCode) {
+    public List<InventoryResponse> isInStock(@RequestParam List<String> skuCode) {
         return inventoryService.isInStock(skuCode);
     }
 
